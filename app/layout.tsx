@@ -28,18 +28,18 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Stockly - Inventory Management System",
+  title: "HBS Stock - Stock Management System",
   description:
-    "Stockly is a modern Next.js web application for efficient product inventory management. Features include product listing, filtering, sorting, secure authentication, and responsive design.",
+    "HBS Stock is a modern Next.js web application for efficient product inventory management. Features include product listing, filtering, sorting, secure authentication, and responsive design.",
   authors: [
     {
-      name: "Arnob Mahmud",
-      url: "https://arnob-mahmud.vercel.app/",
-      email: "arnob_t78@yahoo.com",
+      name: "HBS Stock",
+      url: "https://hbsstock.vercel.app/",
+      email: "quddoos18@gmail.com",
     },
   ],
   keywords: [
-    "Stockly",
+    "HBS Stock",
     "Inventory Management",
     "Next.js",
     "React",
@@ -50,7 +50,7 @@ export const metadata = {
     "JWT",
     "CRUD",
     "Responsive Web App",
-    "Arnob Mahmud",
+    "HBS Stock",
   ],
   icons: {
     icon: "/favicon.ico",
@@ -60,24 +60,24 @@ export const metadata = {
     ],
   },
   openGraph: {
-    title: "Stockly - Inventory Management System",
+    title: "HBS Stock - Stock Management System",
     description:
-      "Efficiently manage your product inventory with Stockly, a secure and responsive Next.js web application.",
-    url: "https://stockly-inventory.vercel.app/",
+      "Efficiently manage your product inventory with HBS Stock, a secure and responsive Next.js web application.",
+    url: "https://hbsstock.vercel.app/",
     images: [
       {
         url: "https://github.com/user-attachments/assets/7495dcfb-c7cb-44e6-a1ef-d82930a8ada7",
         width: 1200,
         height: 630,
-        alt: "Stockly Screenshot",
+        alt: "HBS Stock Screenshot",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Stockly - Inventory Management System",
+    title: "HBS Stock - Stock Management System",
     description:
-      "Efficiently manage your product inventory with Stockly, a secure and responsive Next.js web application.",
+      "Efficiently manage your product inventory with HBS Stock, a secure and responsive Next.js web application.",
     images: [
       "https://github.com/user-attachments/assets/7495dcfb-c7cb-44e6-a1ef-d82930a8ada7",
     ],

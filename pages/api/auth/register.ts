@@ -23,6 +23,7 @@ export default async function handler(
   try {
     const { name, email, password } = registerSchema.parse(req.body);
 
+    console.log("Registering user:", name, email, password);
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: "User already exists" });
@@ -70,6 +71,7 @@ export default async function handler(
     res.status(201).json({ id: createdUser.id, name: createdUser.name, email: createdUser.email });
   } catch (error) {
     if (error instanceof Error) {
+      console.error("Registration error:", error);
       res.status(500).json({ error: error.message });
     } else {
       res.status(500).json({ error: "An unknown error occurred" });
