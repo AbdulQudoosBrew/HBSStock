@@ -94,7 +94,7 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "sku",
-    header: ({ column }) => <SortableHeader column={column} label="SKU" />,
+    header: ({ column }) => <SortableHeader column={column} label="Code" />,
   },
   {
     accessorKey: "quantity",
@@ -168,31 +168,31 @@ export const columns: ColumnDef<Product>[] = [
       return <span>{supplierName || "Unknown"}</span>;
     },
   },
-  {
-    id: "qrCode",
-    header: "QR Code",
-    cell: ({ row }) => {
-      const product = row.original;
-      const qrData = JSON.stringify({
-        id: product.id,
-        name: product.name,
-        sku: product.sku,
-        price: product.price,
-        quantity: product.quantity,
-        status: product.status,
-        category: product.category,
-        supplier: product.supplier,
-      });
+  // {
+  //   id: "qrCode",
+  //   header: "QR Code",
+  //   cell: ({ row }) => {
+  //     const product = row.original;
+  //     const qrData = JSON.stringify({
+  //       id: product.id,
+  //       name: product.name,
+  //       sku: product.sku,
+  //       price: product.price,
+  //       quantity: product.quantity,
+  //       status: product.status,
+  //       category: product.category,
+  //       supplier: product.supplier,
+  //     });
 
-      return (
-        <QRCodeHover
-          data={qrData}
-          title={`${product.name} QR`}
-          size={200}
-        />
-      );
-    },
-  },
+  //     return (
+  //       <QRCodeHover
+  //         data={qrData}
+  //         title={`${product.name} QR`}
+  //         size={200}
+  //       />
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {

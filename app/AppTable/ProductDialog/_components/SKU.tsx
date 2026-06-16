@@ -39,7 +39,7 @@ export default function SKU({ allProducts }: SKUProps) {
   return (
     <div className="mt-5 flex flex-col gap-2">
       <Label htmlFor="sku" className="text-slate-600">
-        SKU
+        Code
       </Label>
       <Input
         {...register("sku")}

@@ -31,7 +31,7 @@ const ProductSchema = z.object({
     .max(100, "Product Name must be 100 characters or less"),
   sku: z
     .string()
-    .min(1, "SKU is required")
+    .min(1, "Code is required")
     .regex(/^[a-zA-Z0-9-_]+$/, "SKU must be alphanumeric"),
   quantity: z
     .number()

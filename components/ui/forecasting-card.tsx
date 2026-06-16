@@ -375,7 +375,7 @@ export function ForecastingCard({ products, className }: ForecastingCardProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-4">
+        {/* <div className="flex gap-2 pt-4">
           <Button
             variant="outline"
             className="flex-1"
@@ -392,7 +392,7 @@ export function ForecastingCard({ products, className }: ForecastingCardProps) {
             <TrendingUp className="mr-2 h-4 w-4" />
             View Details
           </Button>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

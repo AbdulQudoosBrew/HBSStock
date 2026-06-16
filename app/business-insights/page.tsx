@@ -589,7 +589,7 @@ export default function BusinessInsightsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <QrCode className="h-5 w-5" />
@@ -604,7 +604,7 @@ export default function BusinessInsightsPage() {
                 showDownload={false}
               />
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
 
         {/* Forecasting Section */}

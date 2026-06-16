@@ -5,9 +5,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiFillProduct } from "react-icons/ai";
-import { FiActivity, FiBarChart, FiFileText, FiHome } from "react-icons/fi"; // Import icons for new nav items
+import { FiActivity, FiBarChart, FiHome } from "react-icons/fi"; // Import icons for new nav items
 import { useAuth } from "../authContext";
 import { ModeToggle } from "./ModeToggle";
+import Image from "next/image";
 
 export default function AppHeader() {
   const { logout, user } = useAuth();
@@ -49,14 +50,14 @@ export default function AppHeader() {
       {/* Logo and Welcome Section */}
       <div className="flex items-center gap-4">
         <div
-          className={`flex aspect-square size-10 items-center justify-center rounded-lg bg-primary-dark text-primary-foreground cursor-pointer`}
+          className={`flex  size-20 items-center justify-center rounded-xl bg-primary-dark text-primary-foreground cursor-pointer`}
           onClick={() => handleNavigation("/")}
         >
-          <AiFillProduct className="text-3xl" />
+          <Image src="/logo.jpg" alt="Logo" width={200} height={200} />
         </div>
         <div className="text-center sm:text-left">
           <h1 className="text-2xl font-bold">Welcome, {user?.name}!</h1>
-          <p className="text-sm">{user?.email}</p>
+          <p className="text-sm">{user?.email}</ p>
         </div>
       </div>
 
@@ -80,7 +81,7 @@ export default function AppHeader() {
           <FiBarChart className="mr-2 h-4 w-4" />
           Business Insights
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           size="sm"
           onClick={() => handleNavigation("/api-docs")}
@@ -88,8 +89,8 @@ export default function AppHeader() {
         >
           <FiFileText className="mr-2 h-4 w-4" />
           API Docs
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           variant="ghost"
           size="sm"
           onClick={() => handleNavigation("/api-status")}
@@ -97,9 +98,9 @@ export default function AppHeader() {
         >
           <FiActivity className="mr-2 h-4 w-4" />
           API Status
-        </Button>
+        </Button> */}
 
-        <ModeToggle />
+        {/* <ModeToggle /> */}
         <Button
           onClick={handleLogout}
           disabled={isLoggingOut}
