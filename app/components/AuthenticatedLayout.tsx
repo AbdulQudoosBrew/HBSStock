@@ -16,7 +16,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   return (
     <div className="poppins w-full min-h-screen bg-gray-50 dark:bg-[#121212]">
       {/* Responsive Card */}
-      <Card className="flex flex-col shadow-none space-y-4 lg:space-y-6 lg:mx-8 lg:my-6 lg:rounded-lg lg:border lg:shadow-md">
+      <Card className="flex flex-col shadow-none  lg:shadow-md">
         {/* Header Section */}
         {showHeader && <AppHeader />}
 

@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiFillProduct } from "react-icons/ai";
-import { FiActivity, FiBarChart, FiHome } from "react-icons/fi"; // Import icons for new nav items
+import { FiActivity, FiBarChart, FiHome, FiPackage } from "react-icons/fi"; // Import icons for new nav items
 import { useAuth } from "../authContext";
 import { ModeToggle } from "./ModeToggle";
 import Image from "next/image";
@@ -46,7 +46,7 @@ export default function AppHeader() {
   };
 
   return (
-    <div className="p-4 flex flex-col sm:flex-row justify-between items-center bg-primary text-primary-foreground rounded-lg shadow-md">
+    <div className="p-4 flex flex-col sm:flex-row justify-between items-center bg-primary text-primary-foreground  shadow-md">
       {/* Logo and Welcome Section */}
       <div className="flex items-center gap-4">
         <div
@@ -71,6 +71,15 @@ export default function AppHeader() {
         >
           <FiHome className="mr-2 h-4 w-4" />
           Dashboard
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleNavigation("/orders")}
+          className="text-primary-foreground hover:bg-primary-dark"
+        >
+          <FiPackage className="mr-2 h-4 w-4" />
+          Orders
         </Button>
         <Button
           variant="ghost"

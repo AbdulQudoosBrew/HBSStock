@@ -302,13 +302,7 @@ export default function BusinessInsightsPage() {
               Comprehensive insights into your inventory performance
             </p>
           </div>
-          <Button
-            onClick={handleExportAnalytics}
-            className="flex items-center gap-2"
-          >
-            <Download className="h-4 w-4" />
-            Export Analytics
-          </Button>
+         
         </div>
 
         {/* Key Metrics */}
@@ -353,38 +347,8 @@ export default function BusinessInsightsPage() {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* Category Distribution */}
-              <ChartCard title="Category Distribution" icon={PieChartIcon}>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={analyticsData.categoryDistribution}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) =>
-                        `${name} ${((percent || 0) * 100).toFixed(0)}%`
-                      }
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {analyticsData.categoryDistribution.map(
-                        (entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        )
-                      )}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartCard>
-
-              {/* Monthly Trend - Full Year */}
+            <div className="grid grid-cols-1  gap-4">
+           
               <ChartCard
                 title="Product Growth Trend (Full Year)"
                 icon={TrendingUp}

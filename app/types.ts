@@ -29,3 +29,25 @@ export interface Category {
   name: string;
   userId: string;
 }
+
+// Define the Customer interface
+export interface Customer {
+  id: string;
+  name: string;
+  phone: string;
+  address: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Define the Order interface
+export interface Order {
+  id: string;
+  customerId: string;
+  productId: string;
+  quantity: number;
+  price: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
