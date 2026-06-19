@@ -26,16 +26,6 @@ model Invoice {
   orderId       Json?  @unique
 }
 
-model Order {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  /// Field referred in an index, but found no data to define the type.
-  orderNumber Json?  @unique
-}
-
-model OrderItem {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
-
 model Permission {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   /// Field referred in an index, but found no data to define the type.
@@ -47,16 +37,50 @@ model Permission {
 }
 
 model Product {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  categoryId String   @db.ObjectId
-  createdAt  DateTime @db.Date
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  categoryId String      @db.ObjectId
+  createdAt  DateTime    @db.Date
   name       String
   price      Float
   quantity   BigInt
-  sku        String   @unique
+  sku        String      @unique
   status     String
-  supplierId String   @db.ObjectId
-  userId     String   @db.ObjectId
+  supplierId String      @db.ObjectId
+  userId     String      @db.ObjectId
+  orderItems OrderItem[]
+}
+
+model Customer {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String
+  address   String
+  userId    String   @db.ObjectId
+  createdAt DateTime @db.Date
+  updatedAt DateTime @db.Date
+  orders    Order[]
+}
+
+model Order {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  orderNumber String      @unique
+  customerId  String      @db.ObjectId
+  userId      String      @db.ObjectId
+  status      String      @default("pending")
+  createdAt   DateTime    @db.Date
+  updatedAt   DateTime    @db.Date
+  customer    Customer    @relation(fields: [customerId], references: [id])
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String  @db.ObjectId
+  productId String  @db.ObjectId
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Session {

@@ -1,4 +1,4 @@
-import { Customer, Order } from "@/app/types";
+import { CreateOrderInput, Customer, Order } from "@/app/types";
 import axiosInstance from "@/utils/axiosInstance";
 import { create } from "zustand";
 
@@ -17,7 +17,7 @@ interface CustomersState {
   addCustomer: (customer: Customer) => Promise<{ success: boolean }>;
   updateCustomer: (updatedCustomer: Customer) => Promise<{ success: boolean }>;
   deleteCustomer: (customerId: string) => Promise<{ success: boolean }>;
-  addOrder: (order: Order) => Promise<{ success: boolean }>;
+  addOrder: (order: CreateOrderInput) => Promise<{ success: boolean }>;
   updateOrder: (updatedOrder: Order) => Promise<{ success: boolean }>;
   deleteOrder: (orderId: string) => Promise<{ success: boolean }>;
 }
@@ -164,7 +164,7 @@ export const useCustomersStore = create<CustomersState>((set) => ({
   },
 
   // Add a new order
-  addOrder: async (order: Order) => {
+  addOrder: async (order: CreateOrderInput) => {
     set({ isLoading: true });
     try {
       const response = await axiosInstance.post("/orders", order);
@@ -174,7 +174,15 @@ export const useCustomersStore = create<CustomersState>((set) => ({
         console.log("Order added successfully:", newOrder);
       }
       set((state) => ({
-        allOrders: [...state.allOrders, newOrder],
+        allOrders: [newOrder, ...state.allOrders],
+        allCustomers: state.allCustomers.map((customer) =>
+          customer.id === newOrder.customerId
+            ? {
+                ...customer,
+                orders: [newOrder, ...(customer.orders ?? [])],
+              }
+            : customer
+        ),
       }));
       return { success: true };
     } catch (error) {

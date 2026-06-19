@@ -1,5 +1,3 @@
-//import { ReactNode } from "react";
-
 // Define the Product interface
 export interface Product {
   id: string;
@@ -8,7 +6,7 @@ export interface Product {
   price: number;
   quantity: number;
   status?: string;
-  createdAt: Date;
+  createdAt: Date | string;
   userId: string;
   categoryId: string;
   supplierId: string;
@@ -30,24 +28,45 @@ export interface Category {
   userId: string;
 }
 
-// Define the Customer interface
+export interface OrderItem {
+  id: string;
+  orderId?: string;
+  productId: string;
+  quantity: number;
+  price: number;
+  product?: Pick<Product, "id" | "name" | "sku" | "price">;
+}
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  customerId: string;
+  status: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  customer?: Pick<Customer, "id" | "name" | "phone" | "address">;
+  items: OrderItem[];
+}
+
 export interface Customer {
   id: string;
   name: string;
   phone: string;
   address: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  orders?: Order[];
 }
 
-// Define the Order interface
-export interface Order {
-  id: string;
+export interface CreateOrderInput {
   customerId: string;
-  productId: string;
-  quantity: number;
-  price: number;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  status?: string;
+  items: { productId: string; quantity: number; price: number }[];
+}
+
+export function getOrderTotal(order: Order): number {
+  return (order.items ?? []).reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 }
