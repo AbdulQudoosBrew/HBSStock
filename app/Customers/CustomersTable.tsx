@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-  import { Customer } from "@/app/types"; // eslint-disable-line @typescript-eslint/no-unused-vars  (columns and pagination are not used)  
+  import { Customer } from "@/app/types"; 
 import Skeleton from "@/components/Skeleton"; // Skeleton component for loading state
 import PaginationSelection, { PaginationType } from "../Products/PaginationSelection";
 import { Button } from "@/components/ui/button";
