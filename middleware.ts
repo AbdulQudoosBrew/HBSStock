@@ -6,17 +6,18 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Define protected routes that require authentication
-  const protectedRoutes = ["/api-docs", "/api-status", "/business-insights"];
+  const protectedRoutes = ["/api-docs", "/api-status", "/business-insights","/orders",];
 
   // Check if the current path is a protected route
   const isProtectedRoute = protectedRoutes.some((route) =>
     path.startsWith(route)
   );
+  console.log("isProtectedRoute",isProtectedRoute )
 
   if (isProtectedRoute) {
     // Get the session token from cookies
     const sessionToken = request.cookies.get("session_id")?.value;
-
+console.log("Sessiontoken", sessionToken)
     // If no session token, redirect to login
     if (
       !sessionToken ||
