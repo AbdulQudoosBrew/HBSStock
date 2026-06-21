@@ -316,7 +316,7 @@ export default function BusinessInsightsPage() {
           />
           <AnalyticsCard
             title="Total Value"
-            value={`$${analyticsData.totalValue.toLocaleString()}`}
+            value={`£${analyticsData.totalValue.toLocaleString()}`}
             icon={DollarSign}
             iconColor="text-green-600"
             description="Total inventory value"
@@ -415,7 +415,7 @@ export default function BusinessInsightsPage() {
                     <YAxis />
                     <Tooltip
                       formatter={(value) => [
-                        `$${value.toLocaleString()}`,
+                        `£${value.toLocaleString()}`,
                         "Value",
                       ]}
                       labelFormatter={(label) => `Product: ${label}`}

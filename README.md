@@ -657,7 +657,7 @@ QR code generation with click-to-view functionality:
 ```typescript
 // Example: QR Code Usage
 <QRCodeHover
-  value={`Product: ${product.name}\nSKU: ${product.sku}\nPrice: $${product.price}`}
+  value={`Product: ${product.name}\nSKU: ${product.sku}\nPrice: £${product.price}`}
   title="View QR Code"
 />
 ```

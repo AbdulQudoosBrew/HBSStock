@@ -122,7 +122,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "price",
     header: ({ column }) => <SortableHeader column={column} label="Price" />,
-    cell: ({ getValue }) => `$${getValue<number>().toFixed(2)}`,
+    cell: ({ getValue }) => `£${getValue<number>().toFixed(2)}`,
   },
   {
     accessorKey: "status",

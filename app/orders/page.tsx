@@ -18,7 +18,7 @@ import { ProductOrdersView } from "./ProductOrdersView";
 
 export default function OrdersPage() {
   const { allOrders, allCustomers, loadCustomers, loadOrders, isLoading } =
-    useCustomersStore();
+    useCustomersStore();   
   const { allProducts, loadProducts } = useProductStore();
   const { user } = useAuth();
 
@@ -91,7 +91,7 @@ export default function OrdersPage() {
           />
           <AnalyticsCard
             title="Total Revenue"
-            value={`$${analyticsData.totalRevenue.toLocaleString(undefined, {
+            value={`£${analyticsData.totalRevenue.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}`}
