@@ -42,6 +42,7 @@ export const verifyToken = (token: string): { userId: string } | null => {
     }
     
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    
     // Debug log - only log in development
     if (process.env.NODE_ENV === 'development') {
       console.log("Verified Token:", decoded);

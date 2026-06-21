@@ -153,6 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem("isLoggedIn", "false");
     localStorage.setItem("token", "");
     localStorage.setItem("getSession", "");
+    
   };
 
   return (

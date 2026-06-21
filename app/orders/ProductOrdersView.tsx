@@ -70,7 +70,7 @@ export function ProductOrdersView({ summaries }: ProductOrdersViewProps) {
                       <Badge variant="outline">{entry.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      ${entry.lineTotal.toFixed(2)}
+                    £{entry.lineTotal.toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}

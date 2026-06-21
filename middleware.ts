@@ -12,7 +12,6 @@ export function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.some((route) =>
     path.startsWith(route)
   );
-  console.log("isProtectedRoute",isProtectedRoute )
 
   if (isProtectedRoute) {
     // Get the session token from cookies

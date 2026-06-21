@@ -153,20 +153,20 @@ export default function BusinessInsightsPage() {
 
     // Price range distribution
     const priceRanges = [
-      { name: "$0-$100", min: 0, max: 100 },
-      { name: "$100-$500", min: 100, max: 500 },
-      { name: "$500-$1000", min: 500, max: 1000 },
-      { name: "$1000-$2000", min: 1000, max: 2000 },
-      { name: "$2000+", min: 2000, max: Infinity },
+      { name: "£0-£100", min: 0, max: 100 },
+      { name: "£100-£500", min: 100, max: 500 },
+      { name: "£500-£1000", min: 500, max: 1000 },
+      { name: "£1000-£2000", min: 1000, max: 2000 },
+      { name: "£2000+", min: 2000, max: Infinity },
     ];
 
     const priceRangeDistribution = priceRanges.map((range, index) => ({
       name: range.name,
       value: allProducts.filter((product) => {
-        if (range.name === "$2000+") {
+        if (range.name === "£2000+") {
           // For $2000+ range, include products > $2000 (not including $2000)
           return product.price > 2000;
-        } else if (range.name === "$1000-$2000") {
+        } else if (range.name === "£1000-£2000") {
           // For $1000-$2000 range, include products >= $1000 and <= $2000
           return product.price >= range.min && product.price <= range.max;
         } else {

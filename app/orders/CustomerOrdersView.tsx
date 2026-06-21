@@ -72,7 +72,7 @@ export function CustomerOrdersView({ customers }: CustomerOrdersViewProps) {
                         <Badge variant="outline">{order.status}</Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        ${getOrderTotal(order).toFixed(2)}
+                      £{getOrderTotal(order).toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))}
