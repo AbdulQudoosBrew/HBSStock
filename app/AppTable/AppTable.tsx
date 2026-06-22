@@ -40,7 +40,14 @@ const AppTable = React.memo(() => {
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
 
-
+  // Load products if the user is logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      handleLoadProducts();
+    }
+  }, [isLoggedIn, handleLoadProducts, router]);
 
 
 
@@ -57,13 +64,7 @@ const AppTable = React.memo(() => {
   if (!isLoggedIn || !user) {
     return null;
   }
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    } else {
-      handleLoadProducts();
-    }
-  }, [isLoggedIn, handleLoadProducts, router]);
+
 
   return (
     <Card className="flex flex-col shadow-none poppins border-none">
