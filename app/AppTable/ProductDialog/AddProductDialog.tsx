@@ -23,6 +23,7 @@ import SKU from "./_components/SKU";
 import Quantity from "./_components/Quantity";
 import Price from "./_components/Price";
 import { Product } from "@/app/types";
+import { useSearchParams } from "next/navigation";
 
 const ProductSchema = z.object({
   productName: z
@@ -59,7 +60,7 @@ export default function AddProductDialog({
   const methods = useForm<ProductFormData>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      productName: "",
+      productName:  '',
       sku: "",
       quantity: 0,
       price: 0.0,
@@ -67,6 +68,10 @@ export default function AddProductDialog({
   });
 
   const { reset } = methods;
+  const params = useSearchParams()
+  const nameParam = params?.get("name")
+  console.log("nameParam",nameParam)
+  
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedSupplier, setSelectedSupplier] = useState<string>("");
@@ -86,11 +91,11 @@ export default function AddProductDialog({
     suppliers,
   } = useProductStore();
   const { toast } = useToast();
-
+ 
   useEffect(() => {
     if (selectedProduct) {
       reset({
-        productName: selectedProduct.name,
+        productName: selectedProduct.name ,
         sku: selectedProduct.sku,
         quantity: selectedProduct.quantity,
         price: selectedProduct.price,
@@ -125,7 +130,7 @@ export default function AddProductDialog({
         const newProduct: Product = {
           id: Date.now().toString(),
           supplierId: selectedSupplier,
-          name: data.productName,
+          name: data.productName ,
           price: data.price,
           quantity: data.quantity,
           sku: data.sku,

@@ -12,9 +12,27 @@ import { useProductStore } from "../useProductStore";
 //import { ColumnFiltersState } from "@tanstack/react-table";
 
 const AppTable = React.memo(() => {
+  // Load products if the user is logged in
+
   const { allProducts, loadProducts, isLoading } = useProductStore();
   const { isLoggedIn, user } = useAuth();
   const router = useRouter();
+  // Memoize the loadProducts callback to prevent unnecessary re-renders
+  const handleLoadProducts = useCallback(() => {
+    if (isLoggedIn) {
+      loadProducts();
+    }
+  }, [isLoggedIn, loadProducts]);
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      handleLoadProducts();
+    }
+  }, [isLoggedIn, handleLoadProducts, router]);
+
+
+
 
   // State for column filters, search term, and pagination
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,21 +46,9 @@ const AppTable = React.memo(() => {
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
 
-  // Memoize the loadProducts callback to prevent unnecessary re-renders
-  const handleLoadProducts = useCallback(() => {
-    if (isLoggedIn) {
-      loadProducts();
-    }
-  }, [isLoggedIn, loadProducts]);
 
-  // Load products if the user is logged in
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    } else {
-      handleLoadProducts();
-    }
-  }, [isLoggedIn, handleLoadProducts, router]);
+
+
 
   useEffect(() => {
     // Debug log for products - only log in development

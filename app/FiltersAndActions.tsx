@@ -21,6 +21,9 @@ import AddSupplierDialog from "./AppTable/ProductDialog/AddSupplierDialog";
 import PaginationSelection, {
   PaginationType,
 } from "./Products/PaginationSelection";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useProductStore } from "./useProductStore";
 
 type FiltersAndActionsProps = {
   allProducts: Product[];
@@ -53,7 +56,39 @@ export default function FiltersAndActions({
   setPagination,
   userId,
 }: FiltersAndActionsProps) {
+  const {
+    isLoading,
+    setOpenProductDialog,
+    openProductDialog,
+    setSelectedProduct,
+    selectedProduct,
+    addProduct,
+    updateProduct,
+    loadProducts,
+    categories,
+    suppliers,
+  } = useProductStore();
   const { toast } = useToast();
+  const params = useSearchParams()
+  const nameParam = params?.get("name")
+  const codeParam = params?.get("code")
+  console.log("codeParam", codeParam)
+  useEffect(() => {
+    if (nameParam && codeParam && allProducts.length > 0) {
+      const searchedItem = allProducts.filter((product) => {
+        return product.name.toLowerCase().includes(nameParam.toLowerCase()) && product.sku.toLowerCase().includes(codeParam.toLowerCase());
+      }
+      )
+      if (searchedItem.length > 0 ){
+        // setOpenProductDialog(true)
+        setSelectedProduct(searchedItem[0])
+      }else{
+       setOpenProductDialog(true)
+      }
+    }
+
+  }, [nameParam, allProducts]);
+
 
   // Filter products based on current filters
   const getFilteredProducts = () => {

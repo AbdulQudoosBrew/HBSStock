@@ -12,7 +12,7 @@ export default function GlobalLoading() {
   // Debug logs - only log in development
   if (process.env.NODE_ENV === 'development') {
     console.log("GlobalLoading: pathname =", pathname);
-    console.log("GlobalLoading: searchParams =", searchParams);
+    // console.log("GlobalLoading: searchParams =", searchParams);
   }
 
   useEffect(() => {
