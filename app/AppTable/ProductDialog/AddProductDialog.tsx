@@ -68,9 +68,7 @@ export default function AddProductDialog({
   });
 
   const { reset } = methods;
-  const params = useSearchParams()
-  const nameParam = params?.get("name")
-  console.log("nameParam",nameParam)
+ 
   
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -201,10 +199,10 @@ export default function AddProductDialog({
   const handleOpenChange = (open: boolean) => {
     if (open) {
       // When opening the dialog for adding a new product, clear any selected product
-      setSelectedProduct(null);
+      // setSelectedProduct(null);
     } else {
       // When closing the dialog, also clear the selected product to ensure clean state
-      setSelectedProduct(null);
+      // setSelectedProduct(null);
     }
     setOpenProductDialog(open);
   };

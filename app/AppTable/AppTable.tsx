@@ -65,7 +65,6 @@ const AppTable = React.memo(() => {
     return null;
   }
 
-
   return (
     <Card className="flex flex-col shadow-none poppins border-none">
       {/* Centered Header */}

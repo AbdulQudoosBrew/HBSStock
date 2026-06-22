@@ -73,6 +73,7 @@ export default function FiltersAndActions({
   const nameParam = params?.get("name")
   const codeParam = params?.get("code")
   console.log("codeParam", codeParam)
+
   useEffect(() => {
     if (nameParam && codeParam && allProducts.length > 0) {
       const searchedItem = allProducts.filter((product) => {
@@ -80,7 +81,7 @@ export default function FiltersAndActions({
       }
       )
       if (searchedItem.length > 0 ){
-        // setOpenProductDialog(true)
+        setOpenProductDialog(true)
         setSelectedProduct(searchedItem[0])
       }else{
        setOpenProductDialog(true)

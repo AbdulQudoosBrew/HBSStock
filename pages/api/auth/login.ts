@@ -90,16 +90,18 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // Determine if the connection is secure
-    const isSecure =
-      req.headers["x-forwarded-proto"] === "https" ||
-      process.env.NODE_ENV !== "development";
+    // const isSecure =
+    //   req.headers["x-forwarded-proto"] === "https" ||
+    //   process.env.NODE_ENV !== "development";
 
-    const cookies = new Cookies(req, res, { secure: isSecure });
+    const cookies = new Cookies(req, res, 
+      // { secure: isSecure }
+    );
     cookies.set("session_id", token, {
       httpOnly: true,
-      secure: isSecure, // Dynamically set secure flag
+      // secure: isSecure, // Dynamically set secure flag
       sameSite: "none", // Allow cross-origin cookies
-      maxAge: 60 * 60 * 1000, // 1 hour
+      // maxAge: 60 * 60 * 1000, // 1 hour
     });
 
     console.log("Login successful, session ID set:", token);
