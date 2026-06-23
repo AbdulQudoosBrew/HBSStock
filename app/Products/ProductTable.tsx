@@ -91,11 +91,11 @@ export const ProductTable = React.memo(function ProductTable({
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace("/login");
-    }
-  }, [isLoggedIn, router]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.replace("/login");
+  //   }
+  // }, [isLoggedIn, router]);
 
   const filteredData = useMemo(() => {
     // Debug log - only log in development
