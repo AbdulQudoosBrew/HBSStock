@@ -16,11 +16,11 @@ const PageContent: React.FC = () => {
   const router = useRouter();
   const { isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
-  }, [isLoggedIn, router]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.push("/login");
+  //   }
+  // }, [isLoggedIn, router]);
 
   // Memoize the component to prevent unnecessary re-renders
   const content = useMemo(() => {
