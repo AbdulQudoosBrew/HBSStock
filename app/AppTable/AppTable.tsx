@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import FiltersAndActions from "../FiltersAndActions";
 import { PaginationType } from "../Products/PaginationSelection";
@@ -14,7 +14,7 @@ import { useProductStore } from "../useProductStore";
 const AppTable = React.memo(() => {
   // Load products if the user is logged in
 
-  const { allProducts, loadProducts, isLoading } = useProductStore();
+  const { allProducts, loadProducts, isLoading ,setSelectedProduct,setOpenProductDialog} = useProductStore();
   const { isLoggedIn, user } = useAuth();
   const router = useRouter();
   // Memoize the loadProducts callback to prevent unnecessary re-renders
@@ -39,15 +39,37 @@ const AppTable = React.memo(() => {
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
+ 
 
   // Load products if the user is logged in
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     router.push("/login");
+  //   } else {
+  //     handleLoadProducts();
+  //   }
+  // }, [isLoggedIn, handleLoadProducts,]);
+
+  const params = useSearchParams()
+  const nameParam = params?.get("name")
+  const codeParam = params?.get("code")
+
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    } else {
-      handleLoadProducts();
+    if (nameParam && codeParam && allProducts.length > 0) {
+      const searchedItem = allProducts.filter((product) => {
+        return product.name.toLowerCase()===nameParam.toLowerCase() && product.sku.toLowerCase()===codeParam.toLowerCase();
+      }
+      )
+      if (searchedItem.length > 0 ){
+        setOpenProductDialog(true)
+        setSelectedProduct(searchedItem[0])
+      }else{
+      setSelectedProduct(null)
+       setOpenProductDialog(true)
+      }
     }
-  }, [isLoggedIn, handleLoadProducts, router]);
+
+  }, [nameParam, allProducts]);
 
 
 

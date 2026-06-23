@@ -8,10 +8,7 @@ const prisma = new PrismaClient();
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   const allowedOrigins = [
-    "https://stockly-inventory.vercel.app",
-    "https://stockly-inventory-managment-nextjs-ovlrz6kdv.vercel.app",
-    "https://stockly-inventory-managment-nextjs-arnob-mahmuds-projects.vercel.app",
-    "https://stockly-inventory-managment-n-git-cc3097-arnob-mahmuds-projects.vercel.app",
+    "https://hbsstock.vercel.app/",,
     req.headers.origin,
   ];
   const origin = req.headers.origin;
@@ -21,7 +18,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
   } else {
     res.setHeader(
       "Access-Control-Allow-Origin",
-      "https://stockly-inventory.vercel.app"
+      "https://hbsstock.vercel.app/"
     );
   }
 

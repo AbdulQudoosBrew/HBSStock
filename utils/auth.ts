@@ -15,7 +15,7 @@ type User = PrismaUser;
 const isServer = typeof window === 'undefined';
 
 export const generateToken = (userId: string): string => {
-  const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: "7d" });
   // Debug log - only log in development
   if (process.env.NODE_ENV === 'development') {
     console.log("Generated Token:", token);
