@@ -19,9 +19,9 @@ const AppTable = React.memo(() => {
   const router = useRouter();
   // Memoize the loadProducts callback to prevent unnecessary re-renders
   const handleLoadProducts = useCallback(() => {
-    if (isLoggedIn) {
+    // if (isLoggedIn) {
       loadProducts();
-    }
+    // }
   }, [isLoggedIn, loadProducts]);
 
 
@@ -42,13 +42,13 @@ const AppTable = React.memo(() => {
  
 
   // Load products if the user is logged in
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     router.push("/login");
-  //   } else {
-  //     handleLoadProducts();
-  //   }
-  // }, [isLoggedIn, handleLoadProducts,]);
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      handleLoadProducts();
+    }
+  }, [isLoggedIn, handleLoadProducts,]);
 
   const params = useSearchParams()
   const nameParam = params?.get("name")
