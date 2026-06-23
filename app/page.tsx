@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import Loading from "../components/Loading";
-import { useAuth } from "./authContext";
+// import { useAuth } from "./authContext";
 import Home from "./Home";
 import Login from "./login/page";
 
@@ -12,26 +12,26 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-const PageContent: React.FC = () => {
-  const router = useRouter();
-  const { isLoggedIn } = useAuth();
+// const PageContent: React.FC = () => {
+//   const router = useRouter();
+//   const { isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
-  }, [isLoggedIn, router]);
+//   useEffect(() => {
+//     if (!isLoggedIn) {
+//       router.push("/login");
+//     }
+//   }, [isLoggedIn, router]);
 
-  // Memoize the component to prevent unnecessary re-renders
-  const content = useMemo(() => {
-    if (isLoggedIn) {
-      return <Home />;
-    }
-    return <Login />;
-  }, [isLoggedIn]);
+//   // Memoize the component to prevent unnecessary re-renders
+//   const content = useMemo(() => {
+//     if (isLoggedIn) {
+//       return <Home />;
+//     }
+//     return <Login />;
+//   }, [isLoggedIn]);
 
-  return content;
-};
+//   return content;
+// };
 
 const Page: React.FC<PageProps> = ({ params, searchParams }) => {
   const [resolvedParams, setResolvedParams] = useState<{
