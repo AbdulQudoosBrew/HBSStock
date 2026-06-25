@@ -21,9 +21,6 @@ import AddSupplierDialog from "./AppTable/ProductDialog/AddSupplierDialog";
 import PaginationSelection, {
   PaginationType,
 } from "./Products/PaginationSelection";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { useProductStore } from "./useProductStore";
 
 type FiltersAndActionsProps = {
   allProducts: Product[];
