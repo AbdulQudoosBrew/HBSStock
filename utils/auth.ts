@@ -85,7 +85,8 @@ export const getSessionServer = async (
 
 export const getSessionClient = async (): Promise<User | null> => {
   try {
-    const token = Cookies.get("session_id");
+    // const token = Cookies.get("session_id");
+    const token = localStorage.getItem("token")
     // Debug log - only log in development
     if (process.env.NODE_ENV === 'development') {
       console.log("Session ID from cookies:", token);
