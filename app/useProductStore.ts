@@ -1,13 +1,15 @@
-import { Category, Product, Supplier } from "@/app/types";
+import { Category, Product, ProductHistory, ProductHistoryItem, Supplier } from "@/app/types";
 import axiosInstance from "@/utils/axiosInstance";
 import { create } from "zustand";
 
 // Structure of the overall state
 interface ProductState {
   allProducts: Product[];
+  selectedProductHistory: ProductHistoryItem[];
   categories: Category[];
   suppliers: Supplier[];
   isLoading: boolean;
+  openProductDetailDialog: boolean;
   openDialog: boolean;
   setOpenDialog: (openDialog: boolean) => void;
   openProductDialog: boolean;
@@ -20,13 +22,16 @@ interface ProductState {
   loadSuppliers: () => Promise<void>;
   addProduct: (product: Product) => Promise<{ success: boolean }>;
   updateProduct: (updatedProduct: Product) => Promise<{ success: boolean }>;
+  setOpenProductDetailDialog: (openDialog: boolean) => void;
   deleteProduct: (productId: string) => Promise<{ success: boolean }>;
   addCategory: (category: Category) => void;
   editCategory: (categoryId: string, newCategoryName: string) => void;
   deleteCategory: (categoryId: string) => void;
+  getProductHistory: (productId: string) => void;
   addSupplier: (supplier: Supplier) => void;
   editSupplier: (oldName: string, newName: string) => void;
   deleteSupplier: (name: string) => void;
+  setSelectedProductHistory: (history: ProductHistoryItem[]) => void;
 }
 
 export const useProductStore = create<ProductState>((set) => ({
@@ -36,6 +41,9 @@ export const useProductStore = create<ProductState>((set) => ({
   isLoading: false,
   selectedProduct: null,
   openDialog: false,
+  selectedProductHistory: [],
+  openProductDetailDialog: false,
+
 
   // Set the open dialog state
   setOpenDialog: (openDialog) => {
@@ -48,7 +56,18 @@ export const useProductStore = create<ProductState>((set) => ({
   setOpenProductDialog: (openProductDialog) => {
     set({ openProductDialog });
   },
+  setOpenProductDetailDialog: (open: any) => {
 
+    set({
+      openProductDetailDialog: open
+    })
+
+  },
+  setSelectedProductHistory: (history: ProductHistoryItem[]) => {
+    set({
+      selectedProductHistory: history,
+    });
+  },
   // Set the selected product for editing
   setSelectedProduct: (product: Product | null) => {
     set({ selectedProduct: product });
@@ -83,6 +102,31 @@ export const useProductStore = create<ProductState>((set) => ({
         console.error("Error loading products:", error);
       }
       set({ allProducts: [] });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  // Load all products with caching
+  getProductHistory: async (productId: string) => {
+    set({ isLoading: false });
+
+    try {
+      const response = await axiosInstance.get(
+        `/products/${productId}/history`
+      );
+  
+      const history: ProductHistoryItem[] =
+        response.data?.history || [];
+  
+      set({ selectedProductHistory: history });
+  
+      return history; // ✅ IMPORTANT
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error loading product history:", error);
+      }
+
+      return [];
     } finally {
       set({ isLoading: false });
     }

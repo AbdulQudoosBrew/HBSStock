@@ -13,6 +13,18 @@ export interface Product {
   category?: string;
   supplier?: string;
 }
+export interface ProductHistory {
+  id : string;
+  name : string;
+
+}
+
+export interface ProductHistoryItem {
+  id: string;
+  date: string;
+  quantity: number;
+  change: string;
+}
 
 // Define the Supplier interface
 export interface Supplier {

@@ -30,6 +30,7 @@ import { LuGitPullRequestDraft } from "react-icons/lu";
 import { IoMdClose } from "react-icons/io";
 import { BiFirstPage, BiLastPage } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa";
+import { useProductStore } from "../useProductStore";
 
 interface DataTableProps<TData, TValue> {
   data: TData[];
@@ -88,7 +89,6 @@ export const ProductTable = React.memo(function ProductTable({
 }: DataTableProps<Product, unknown>) {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
-
   const [sorting, setSorting] = useState<SortingState>([]);
 
   // useEffect(() => {
@@ -147,6 +147,13 @@ export const ProductTable = React.memo(function ProductTable({
     getSortedRowModel: getSortedRowModel(),
   });
 
+  const {
+    selectedProductHistory,
+    setOpenProductDetailDialog,
+    getProductHistory
+    , setSelectedProductHistory
+  } = useProductStore();
+
   return (
     <div className="poppins">
       {/* Show Skeleton while loading */}
@@ -172,31 +179,46 @@ export const ProductTable = React.memo(function ProductTable({
                   </TableRow>
                 ))}
               </TableHeader>
+
               <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center">
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
+  {table.getRowModel().rows?.length ? (
+    table.getRowModel().rows.map((row) => (
+      <TableRow key={row.id}>
+        {row.getVisibleCells().map((cell) => {
+          const isNameColumn =
+            cell.column.id === "name"; // IMPORTANT
+
+          return (
+            <TableCell
+              key={cell.id}
+              className={isNameColumn ? "cursor-pointer text-blue-600" : ""}
+              onClick={async () => {
+                if (!isNameColumn) return;
+
+                const product = row.original;
+                if (!product?.id) return;
+
+                await getProductHistory(product.id);
+                setOpenProductDetailDialog(true);
+              }}
+            >
+              {flexRender(
+                cell.column.columnDef.cell,
+                cell.getContext()
+              )}
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={columns.length} className="text-center">
+        No results.
+      </TableCell>
+    </TableRow>
+  )}
+</TableBody>
             </Table>
           </div>
 

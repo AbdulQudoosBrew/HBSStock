@@ -175,8 +175,8 @@ export default function AddProductDialog({
             title: "Product Updated Successfully!",
             description: `"${data.productName}" has been updated in your inventory.`,
           });
-          loadProducts();
           setOpenProductDialog(false);
+          loadProducts();
         } else {
           toast({
             title: "Update Failed",

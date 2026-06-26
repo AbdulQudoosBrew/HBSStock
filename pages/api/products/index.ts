@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { getSessionServer } from "@/utils/auth";
-import { MongoClient } from "mongodb";
-
 const prisma = new PrismaClient();
 
 export default async function handler(
@@ -46,7 +44,7 @@ export default async function handler(
             createdAt: new Date(),
           },
         });
-        
+
         // Fetch category and supplier data for the response
         const category = await prisma.category.findUnique({
           where: { id: categoryId },
@@ -54,7 +52,7 @@ export default async function handler(
         const supplier = await prisma.supplier.findUnique({
           where: { id: supplierId },
         });
-        
+
         // Return the created product data with category and supplier names
         res.status(201).json({
           id: product.id,
@@ -75,42 +73,92 @@ export default async function handler(
       }
       break;
 
-    case "GET":
-      try {
-        const products = await prisma.product.findMany({
-          where: { userId },
-        });
+      case "GET":
+        try {
+          const products = await prisma.product.findMany({
+            where: { userId },
+          });
 
-        // Debug log - only log in development
-        if (process.env.NODE_ENV === 'development') {
-          console.log("Raw products from database:", products);
+          // Debug log - only log in development
+          if (process.env.NODE_ENV === 'development') {
+            console.log("Raw products from database:", products);
+          }
+
+          // Fetch category and supplier data separately
+          const transformedProducts = await Promise.all(
+            products.map(async (product) => {
+              const category = await prisma.category.findUnique({
+                where: { id: product.categoryId },
+              });
+              const supplier = await prisma.supplier.findUnique({
+                where: { id: product.supplierId },
+              });
+
+              return {
+                ...product,
+                quantity: Number(product.quantity), // Convert BigInt to Number
+                createdAt: product.createdAt.toISOString(), // Convert `createdAt` to ISO string
+                category: category?.name || "Unknown", // Transform category to string
+                supplier: supplier?.name || "Unknown", // Transform supplier to string
+              };
+            })
+          );
+
+          res.status(200).json(transformedProducts);
+        } catch (error) {
+          res.status(500).json({ error: "Failed to fetch products" });
         }
+        break;
 
-        // Fetch category and supplier data separately
-        const transformedProducts = await Promise.all(
-          products.map(async (product) => {
-            const category = await prisma.category.findUnique({
-              where: { id: product.categoryId },
-            });
-            const supplier = await prisma.supplier.findUnique({
-              where: { id: product.supplierId },
-            });
+      // case "GET":
+      //   try {
+      //     const { id } = req.query;
+      //     if (!id || typeof id !== "string") {
+      //       return res.status(400).json({
+      //         error: "Product id is required"
+      //       });
+      //     }
+      //     const history = await prisma.productStockHistory.findMany({
+      //       where: {
+      //         productId: id
+      //       },
+      //       orderBy: {
+      //         date: "asc"
+      //       }
+      //     });
+      //     const formattedHistory = history.map((item: { quantity: number; id: any; date: { toISOString: () => any; }; }, index: number) => {
+      //       const previous = history[index - 1]?.quantity;
+      //       let change = "-";
+      //       if (previous !== undefined) {
+      //         if (item.quantity > previous) {
+      //           change = `+${item.quantity - previous}`;
+      //         }
+      //         else if (item.quantity < previous) {
+      //           change = `${item.quantity - previous}`;
+      //         }
+      //         else {
+      //           change = "Same";
+      //         }
+      //       }
+      //       return {
+      //         id: item.id,
+      //         date: item.date.toISOString(),
+      //         quantity: item.quantity,
+      //         change
+      //       };
+      //     });
+      //     res.status(200).json({
+      //       history: formattedHistory
+      //     });
+      //   }
+      //   catch (error) {
+      //     console.log(error);
+      //     res.status(500).json({
+      //       error: "Failed to fetch stock history"
+      //     });
+      //   }
+      //   break;
 
-            return {
-              ...product,
-              quantity: Number(product.quantity), // Convert BigInt to Number
-              createdAt: product.createdAt.toISOString(), // Convert `createdAt` to ISO string
-              category: category?.name || "Unknown", // Transform category to string
-              supplier: supplier?.name || "Unknown", // Transform supplier to string
-            };
-          })
-        );
-
-        res.status(200).json(transformedProducts);
-      } catch (error) {
-        res.status(500).json({ error: "Failed to fetch products" });
-      }
-      break;
 
     case "PUT":
       try {
@@ -125,34 +173,57 @@ export default async function handler(
           supplierId,
         } = req.body;
 
+
+        // get old product first
+        const oldProduct = await prisma.product.findUnique({
+          where: { id },
+        });
+
+
+        if (!oldProduct) {
+          return res.status(404).json({
+            error: "Product not found",
+          });
+        }
+
+        // update product
         const updatedProduct = await prisma.product.update({
           where: { id },
           data: {
             name,
             sku,
             price,
-            quantity: BigInt(quantity) as any, // Convert to BigInt for database
+            quantity: BigInt(quantity) as any,
             status,
             categoryId,
             supplierId,
           },
         });
-
-        // Fetch category and supplier data for the response
+        // save stock history only if quantity changed
+        if (
+          quantity !== undefined &&
+          Number(oldProduct.quantity) !== Number(quantity)
+        ) {
+          await prisma.productStockHistory.create({
+            data: {
+              productId: id,
+              quantity: Number(quantity),
+            },
+          });
+        }
+        // Fetch category and supplier
         const category = await prisma.category.findUnique({
           where: { id: categoryId },
         });
         const supplier = await prisma.supplier.findUnique({
           where: { id: supplierId },
         });
-
-        // Return the updated product data with category and supplier names
         res.status(200).json({
           id: updatedProduct.id,
           name: updatedProduct.name,
           sku: updatedProduct.sku,
           price: updatedProduct.price,
-          quantity: Number(updatedProduct.quantity), // Convert BigInt to Number
+          quantity: Number(updatedProduct.quantity),
           status: updatedProduct.status,
           userId: updatedProduct.userId,
           categoryId: updatedProduct.categoryId,
@@ -160,9 +231,13 @@ export default async function handler(
           createdAt: updatedProduct.createdAt.toISOString(),
           category: category?.name || "Unknown",
           supplier: supplier?.name || "Unknown",
+
         });
       } catch (error) {
-        res.status(500).json({ error: "Failed to update product" });
+        console.log(error);
+        res.status(500).json({
+          error: "Failed to update product",
+        });
       }
       break;
 

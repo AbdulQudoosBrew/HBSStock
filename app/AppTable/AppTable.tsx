@@ -9,6 +9,7 @@ import { ProductTable } from "../Products/ProductTable";
 import { columns } from "../Products/columns";
 import { useAuth } from "../authContext";
 import { useProductStore } from "../useProductStore";
+import ProductDetailDialog from "./ProductDialog/ProductDetailDialog";
 //import { ColumnFiltersState } from "@tanstack/react-table";
 
 const AppTable = React.memo(() => {
@@ -108,7 +109,7 @@ const AppTable = React.memo(() => {
           setSearchTerm={setSearchTerm}
           pagination={pagination}
           setPagination={setPagination}
-          allProducts={allProducts}
+          allProducts={allProducts||[]}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
           selectedStatuses={selectedStatuses}
@@ -131,6 +132,8 @@ const AppTable = React.memo(() => {
           selectedStatuses={selectedStatuses}
           selectedSuppliers={selectedSuppliers}
         />
+        <ProductDetailDialog />
+
       </CardContent>
     </Card>
   );

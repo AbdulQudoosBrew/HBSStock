@@ -48,6 +48,17 @@ model Product {
   supplierId String      @db.ObjectId
   userId     String      @db.ObjectId
   orderItems OrderItem[]
+  stockHistory ProductStockHistory[]
+
+}
+
+model ProductStockHistory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  quantity  Int
+  date      DateTime @default(now())
+  product Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Customer {
