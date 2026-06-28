@@ -21,10 +21,31 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+
+
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import {
+
+} from "@/components/ui/popover";
+
 
 type LineItem = {
   productId: string;
@@ -44,7 +65,8 @@ export default function AddOrderDialog() {
   const [status, setStatus] = useState("pending");
   const [lines, setLines] = useState<LineItem[]>([emptyLine()]);
   const [isSubmitting, setIsSubmitting] = useState(false);
- 
+  const [customerSearch, setCustomerSearch] = useState("");
+  const [productSearch, setProductSearch] = useState("");
   const { toast } = useToast();
   const { allCustomers, loadCustomers, addOrder } = useCustomersStore();
   const { allProducts, loadProducts } = useProductStore();
@@ -55,6 +77,24 @@ export default function AddOrderDialog() {
       loadProducts();
     }
   }, [open, loadCustomers, loadProducts]);
+
+  const filteredCustomers = allCustomers.filter((customer) => {
+    const search = customerSearch.toLowerCase();
+
+    return (
+      customer.name.toLowerCase().includes(search) ||
+      customer.phone.toLowerCase().includes(search)
+    );
+  });
+  const filteredProducts = allProducts.filter((product) => {
+    const search = productSearch.toLowerCase();
+
+    return (
+
+      product.name.toLowerCase().includes(search) ||
+      product.sku?.toLowerCase().includes(search)
+    );
+  });
 
   const updateLine = (index: number, patch: Partial<LineItem>) => {
     setLines((prev) =>
@@ -137,7 +177,17 @@ export default function AddOrderDialog() {
           New Order
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className="
+    w-[95vw]
+    max-w-2xl
+    max-h-[90vh]
+    overflow-y-auto
+    p-4
+    sm:p-6
+    rounded-lg
+  "
+      >
         <DialogHeader>
           <DialogTitle>Create Order</DialogTitle>
           <DialogDescription>
@@ -148,18 +198,56 @@ export default function AddOrderDialog() {
         <div className="space-y-4 py-2">
           <div className="grid gap-2">
             <Label>Customer</Label>
-            <Select value={customerId} onValueChange={setCustomerId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select customer" />
-              </SelectTrigger>
-              <SelectContent>
-                {allCustomers.map((customer) => (
-                  <SelectItem key={customer.id} value={customer.id}>
-                    {customer.name} — {customer.phone}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                >
+                  {
+                    allCustomers.find(
+                      (customer) => customer.id === customerId
+                    )?.name || "Select customer"
+                  }
+                </Button>
+              </PopoverTrigger>
+
+              <PopoverContent
+                className="
+    w-[90vw]
+    h-[50vh]
+    sm:w-[300px]
+    p-0 overflow-auto
+  "
+              >
+                <Command>
+                  <CommandInput
+                    placeholder="Search customer name or phone..."
+                    value={customerSearch}
+                    onValueChange={setCustomerSearch}
+                  />
+
+                  <CommandEmpty>
+                    No customer found.
+                  </CommandEmpty>
+
+                  <CommandGroup className=" overflow-auto">
+                    {filteredCustomers.map((customer) => (
+                      <CommandItem
+                        key={customer.id}
+                        onSelect={() => {
+                          setCustomerId(customer.id);
+                          setCustomerSearch("");
+                        }}
+                      >
+                        {customer.name} — {customer.phone}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="grid gap-2">
@@ -198,27 +286,82 @@ export default function AddOrderDialog() {
               >
                 <div className="grid gap-1">
                   <Label className="text-xs">Product</Label>
-                  <Select
-                    value={line.productId}
-                    onValueChange={(value) => handleProductChange(index, value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select product" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {allProducts.map((product) => (
-                        <SelectItem key={product.id} value={product.id}>
-                          {product.name} ({product.sku})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start"
+                      >
+                        {
+                          allProducts.find(
+                            (product) => product.id === line.productId
+                          )
+                            ? `${allProducts.find(
+                              (product) => product.id === line.productId
+                            )?.name}`
+                            : "Select product"
+                        }
+                      </Button>
+                    </PopoverTrigger>
+
+                    <PopoverContent className=" w-[90vw] h-[90vh] sm:w-[350px] sm:h-[50vh] p-0 overflow-auto " >
+                      <Command>
+                        <CommandInput
+                          placeholder="Search product name or SKU..."
+                          value={productSearch}
+                          onValueChange={setProductSearch}
+                        />
+
+                        <CommandEmpty>
+                          No product found.
+                        </CommandEmpty>
+
+                        <CommandList className="max-h-[300px] overflow-y-auto">
+                          <CommandGroup className="">
+                            {filteredProducts.map((product) => (
+                              product.quantity > 0 &&
+                              <CommandItem
+                                key={product.id}
+                                onSelect={() => {
+                                  handleProductChange(
+                                    index,
+                                    product.id
+                                  );
+
+                                  setProductSearch("");
+                                }}
+                              >
+
+                                <div className="flex flex-col">
+                                  <span className="font-medium">
+                                    {product.name}
+                                  </span>
+
+                                  <span className="text-sm text-muted-foreground">
+                                    SKU: {product.sku}
+                                  </span>
+
+                                  <span className="text-sm text-green-600">
+                                    Stock: {product.quantity}
+                                  </span>
+                                </div>
+
+                              </CommandItem>
+
+                            ))}
+
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div className="grid gap-1">
                   <Label className="text-xs">Qty</Label>
                   <Input
                     type="number"
                     min={1}
+                    max={e.target.value}
                     value={line.quantity}
                     onChange={(e) =>
                       updateLine(index, {

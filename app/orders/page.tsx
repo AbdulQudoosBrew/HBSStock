@@ -116,10 +116,9 @@ export default function OrdersPage() {
         </div>
 
         <Tabs defaultValue="customers" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="customers">Customers & Orders</TabsTrigger>
             <TabsTrigger value="orders">All Orders</TabsTrigger>
-            <TabsTrigger value="products">Products & Orders</TabsTrigger>
           </TabsList>
 
           <TabsContent value="customers" className="space-y-4">
@@ -142,9 +141,6 @@ export default function OrdersPage() {
             )}
           </TabsContent>
 
-          <TabsContent value="products" className="space-y-4">
-            <ProductOrdersView summaries={productSummaries} />
-          </TabsContent>
         </Tabs>
       </div>
     </AuthenticatedLayout>

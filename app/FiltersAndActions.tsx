@@ -53,7 +53,6 @@ export default function FiltersAndActions({
   setPagination,
   userId,
 }: FiltersAndActionsProps) {
-  console.log("🚀 ~ FiltersAndActions ~ allProducts:", allProducts)
  
   const { toast } = useToast();
 

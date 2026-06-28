@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatOrderItems } from "./orderUtils";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 interface CustomerOrdersViewProps {
   customers: Customer[];
@@ -25,10 +27,28 @@ export function CustomerOrdersView({ customers }: CustomerOrdersViewProps) {
       </p>
     );
   }
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const getFilteredCustomer = () => {
+    return customers.filter((customer) => {
+      const searchMatch = !searchTerm ||
+      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.phone.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      return searchMatch ;
+    });
+  };
+
+  const filteredCustomers = getFilteredCustomer();
   return (
     <div className="space-y-4">
-      {customers.map((customer) => (
+       <Input
+            placeholder="Search Customer by Name or Number..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="h-10 pr-10 w-[25%] m-auto"
+          />
+      {filteredCustomers.map((customer) => (
         <Card key={customer.id}>
           <CardHeader className="pb-3">
             <div className="flex flex-wrap items-start justify-between gap-2">
