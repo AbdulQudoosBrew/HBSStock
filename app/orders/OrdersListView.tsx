@@ -19,6 +19,7 @@ interface OrdersListViewProps {
 }
 
 export function OrdersListView({ orders }: OrdersListViewProps) {
+  const [searchTerm, setSearchTerm] = useState("");
   if (orders.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
@@ -27,7 +28,7 @@ export function OrdersListView({ orders }: OrdersListViewProps) {
     );
   }
 
-  const [searchTerm, setSearchTerm] = useState("");
+
 
   const getFilteredOrders = () => {
     return orders.filter((order) => {

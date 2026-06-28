@@ -20,6 +20,7 @@ interface CustomerOrdersViewProps {
 }
 
 export function CustomerOrdersView({ customers }: CustomerOrdersViewProps) {
+  const [searchTerm, setSearchTerm] = useState("");
   if (customers.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
@@ -27,7 +28,7 @@ export function CustomerOrdersView({ customers }: CustomerOrdersViewProps) {
       </p>
     );
   }
-  const [searchTerm, setSearchTerm] = useState("");
+  
 
   const getFilteredCustomer = () => {
     return customers.filter((customer) => {

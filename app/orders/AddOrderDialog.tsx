@@ -361,7 +361,7 @@ export default function AddOrderDialog() {
                   <Input
                     type="number"
                     min={1}
-                    max={e.target.value}
+                    // max={line.quantity}
                     value={line.quantity}
                     onChange={(e) =>
                       updateLine(index, {
